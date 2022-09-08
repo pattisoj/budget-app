@@ -48,4 +48,36 @@ class Category:
     return result
 
 
-# def create_spend_chart(categories):
+
+def create_spend_chart(categories):
+  # Get the total for each category
+  total_category_spend = []
+  for category in categories:
+    spend = 0
+    for entry in category.ledger:
+      if entry["amount"] < 0:
+        spend += abs(entry["amount"])
+    total_category_spend.append(round(spend, 2))
+    
+  # Get the total spend
+  total_spend = round(sum(total_category_spend), 2)
+  # Get the percentage of each category (rounded down to the nearest 10)
+  spent_percentage = list(map(lambda amount: int((((amount / total_spend) * 10) // 1) * 10), total_category_spend))
+  # print(spent_percentage)
+
+  # Create the bar chart substrings
+  header = "Percentage spent by category\n"
+
+  chart = ""
+  for value in range(100, -1, -10):
+      chart += str(value).rjust(3) + '|'
+      for percent in spent_percentage:
+        if percent >= value:
+          chart += " o "
+        else:
+          chart += "   "
+      chart += " \n"
+
+  footer = "    " + "-" * ((3 * len(categories)) + 1) + "\n"
+
+  return(header + chart + footer)
