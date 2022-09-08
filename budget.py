@@ -80,4 +80,26 @@ def create_spend_chart(categories):
 
   footer = "    " + "-" * ((3 * len(categories)) + 1) + "\n"
 
-  return(header + chart + footer)
+  # Create category name display
+  category_names = []
+  longest = 0
+
+  for category in categories:
+    category_names.append(category.category)
+    if len(category.category) > longest:
+      longest = len(category.category)
+
+  # Make all the category names the same string length:
+  for i in range(len(categories)):
+    category_names[i] = category_names[i].ljust(longest)
+
+  categories = ""
+  for i in range(longest):
+    categories += ' ' * 5
+    for category in category_names:
+      categories += category[i] + '  '
+    if i != longest-1:
+      categories += '\n'
+
+  
+  return (header + chart + footer + categories).rstrip("\n")
