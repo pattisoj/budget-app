@@ -33,7 +33,19 @@ class Category:
       return True
     else:
       return False
-
+    
+  def __str__(self):
+    result = self.category.center(30, "*")
+    for entry in self.ledger:
+      result += "\n"
+      result += f"{entry['description'][0:23]:<23}"
+      result += f"{'{amount:.2f}'.format(amount = entry['amount'])[0:7]:>7}"
+    total = 0
+    for entry in self.ledger:
+      total += entry["amount"]
+    result += "\n"
+    result += f"Total: {total}"
+    return result
 
 
 # def create_spend_chart(categories):
